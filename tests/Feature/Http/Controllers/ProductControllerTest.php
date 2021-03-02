@@ -39,4 +39,18 @@ class ProductControllerTest extends TestCase
             ->assertHeader( 'content-type', 'application/json' )
             ->assertDatabaseHas( 'products', $data );
     }
+
+    public function test_udpate_product()
+    {
+        $product = Product::factory()->create;
+        $data = [
+            'name' => 'Upddate produtc',
+            'price' => 20000
+        ];
+
+        $this
+            ->patchJson( "/api/products/{$product->getKey()}", $data )
+            ->assertSuccessful()
+            ->assertHeader( 'content-type', 'application/json' );
+    }
 }
