@@ -25,4 +25,18 @@ class ProductControllerTest extends TestCase
             ->assertHeader('content-type', 'application/json')
             ->assertJsonCount(5);
     }
+
+    public function test_store_product()
+    {
+        $data = [
+            'name' => 'Hola',
+            'price' => 1000
+        ];
+
+        $this
+            ->postJson( '/api/products', $data )
+            ->assertSuccessful()
+            ->assertHeader( 'content-type', 'application/json' )
+            ->assertDatabaseHas( 'products', $data );
+    }
 }
