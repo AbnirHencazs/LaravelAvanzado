@@ -5,6 +5,7 @@ namespace Tests\Feature\Http\Controllers;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\Product;
 
 class ProductControllerTest extends TestCase
 {
@@ -36,13 +37,15 @@ class ProductControllerTest extends TestCase
         $this
             ->postJson( '/api/products', $data )
             ->assertSuccessful()
-            ->assertHeader( 'content-type', 'application/json' )
+            ->assertHeader( 'content-type', 'application/json' );
+
+        $this
             ->assertDatabaseHas( 'products', $data );
     }
 
     public function test_udpate_product()
     {
-        $product = Product::factory()->create;
+        $product = Product::factory()->create();
         $data = [
             'name' => 'Upddate produtc',
             'price' => 20000
@@ -69,9 +72,14 @@ class ProductControllerTest extends TestCase
         $product = Product::factory()->create();
 
         $this
-            ->deleteJson( "/api/resource/{$product->getKey()}" )
+            ->deleteJson( "/api/products/{$product->getKey()}" )
             ->assertSuccessful()
-            ->assertHeader( 'content-type', 'application/json' )
-            ->assertDabaseMissing( 'products', $product );
+            ->assertHeader( 'content-type', 'application/json' );
+
+        $this
+            ->assertDatabaseMissing( 'products', [
+                'name' => $product->name,
+                'price' => $product->price
+            ] );
     }
 }
