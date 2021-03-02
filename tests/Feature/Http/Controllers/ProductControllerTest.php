@@ -53,4 +53,14 @@ class ProductControllerTest extends TestCase
             ->assertSuccessful()
             ->assertHeader( 'content-type', 'application/json' );
     }
+
+    public function test_show_product()
+    {
+        $product = Product::factory()->create();
+        
+        $this
+            ->getJson( "/api/products/{$product->getKey()}" )
+            ->assertSuccessful()
+            ->assertHeader( 'content-type', 'application/json' );
+    }
 }
