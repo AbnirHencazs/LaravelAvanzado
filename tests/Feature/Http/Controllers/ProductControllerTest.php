@@ -63,4 +63,15 @@ class ProductControllerTest extends TestCase
             ->assertSuccessful()
             ->assertHeader( 'content-type', 'application/json' );
     }
+
+    public function test_delete_product()
+    {
+        $product = Product::factory()->create();
+
+        $this
+            ->deleteJson( "/api/resource/{$product->getKey()}" )
+            ->assertSuccessful()
+            ->assertHeader( 'content-type', 'application/json' )
+            ->assertDabaseMissing( 'products', $product );
+    }
 }
