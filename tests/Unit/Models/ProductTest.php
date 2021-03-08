@@ -4,6 +4,7 @@ namespace Tests\Unit\Models;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -17,11 +18,17 @@ class ProductTest extends TestCase
      */
     public function test_products_belongs_to_category()
     {
-        $category = Category::factory()->create();
-        $product = Product::factory()->create([
-            'category_id' => $category->id
-        ]);
+        $product = Product::factory()->create();
 
         $this->assertInstanceOf( Category::class, $product->category );
+    }
+    /**
+     * Pruebo que un producto pertenezca a un usuario
+     */
+    public function test_products_belongs_to_user()
+    {
+        $product = Product::factory()->create();
+        
+        $this->assertInstanceOf( User::class, $product->createdBy );
     }
 }
