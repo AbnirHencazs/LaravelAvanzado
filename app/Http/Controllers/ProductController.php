@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductCollection;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -14,7 +16,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return Product::all();
+        return new ProductCollection( Product::all() );
     }
 
     /**
@@ -38,6 +40,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+        $product = new ProductResource( $product );
         //Como usamos inyeccion de dependencia cualquier id que llegue al metodo show
         //se va a consultar al modelo Product y lo almacenara en mi variable
         return $product;
