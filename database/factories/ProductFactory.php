@@ -23,7 +23,10 @@ class ProductFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
-            'price' => $this->faker->numberBetween( 1000, 6000 )
+            'price' => $this->faker->numberBetween( 1000, 6000 ),
+            'category_id' => function() {
+                return \App\Models\Category::query()->inRandomOrder()->first()->id;
+            }
         ];
     }
 }
