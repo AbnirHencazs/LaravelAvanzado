@@ -32,7 +32,7 @@ class CategoryControllerTest extends TestCase
         $response
             ->assertSuccessful()
             ->assertHeader('content-type', 'application/json')
-            ->assertJsonCount(5, 'data');
+            ->assertJsonCount(6, 'data');
     }
 
     public function test_store_category()
