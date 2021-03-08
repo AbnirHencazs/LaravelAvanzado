@@ -32,7 +32,7 @@ class ProductControllerTest extends TestCase
         $response
             ->assertSuccessful()
             ->assertHeader('content-type', 'application/json')
-            ->assertJsonCount(5);
+            ->assertJsonCount(5, 'data'); //cuenta los datos en la key 'data'
     }
 
     public function test_store_product()
