@@ -26,4 +26,16 @@ class RatingTest extends TestCase
         $this->assertInstanceOf( Collection::class, $user->ratings(Product::class)->get() );
         $this->assertInstanceOf( Collection::class, $product->qualifiers(User::class)->get() );
     }
+
+    public function test_averageRating()
+    {
+        $user = User::factory()->create();
+        $user2 = User::factory()->create();
+        $product = Product::factory()->create();
+
+        $user->rate( $product, 5 );
+        $user2->rate( $product, 10 );
+
+        $this->assertEquals( 7.5, $product->averageRating( User::class) );
+    }
 }
