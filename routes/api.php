@@ -22,3 +22,5 @@ Route::resource('products', App\Http\Controllers\ProductController::class)->midd
 Route::resource('categories', App\Http\Controllers\CategoryController::class)->middleware('auth:sanctum');
 Route::post( 'sanctum/token', App\Http\Controllers\UserTokenController::class );
 Route::post( 'newsletter', [App\Http\Controllers\NewsletterController::class, 'send'] );
+Route::post( 'rating/products/{product}', [App\Http\Controllers\RatingController::class, 'products'] )
+            ->middleware('auth:sanctum');
