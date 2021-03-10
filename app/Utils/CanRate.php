@@ -2,6 +2,7 @@
 
 namespace App\Utils;
 
+use App\Events\ModelRated;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -74,6 +75,8 @@ trait CanRate
             'score' => $score,
             'rateable_type' => get_class($model)
         ]);
+
+        event( new ModelRated( $this, $model, $score ) ); //disparamos el evento, hace falta que alguien lo escuche
 
         return true;
     }
