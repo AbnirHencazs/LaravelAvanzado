@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\User;
-use App\Notifications\NewsletterNotification;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class SendVerifyEmailCommand extends Command
@@ -45,9 +45,9 @@ class SendVerifyEmailCommand extends Command
 
             User::query()
                 ->whereNull( 'email_verified_at' )
-                ->whereRaw( 'email_verified_at BETWEEN DATE_ADD(CURDATE(), INTERVAL -7 DAY) AND CURDATE()' )
+                ->whereDate( 'created_at', '<=', Carbon::now()->subDays(7)->format('Y-m-d') )
                 ->each( function(User $user){
-                    $user->notify(new NewsletterNotification());
+                    $user->sendEmailVerificationNotification();
                     $this->output->progressAdvance();
                 } );
 
