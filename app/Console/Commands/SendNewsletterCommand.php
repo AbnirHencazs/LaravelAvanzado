@@ -14,7 +14,9 @@ class SendNewsletterCommand extends Command
      * @var string
      * @param array arreglo de emails opcional al cual se enviaran  las notis
      */
-    protected $signature = 'send:newsletter {emails?*}'; 
+    protected $signature = 'send:newsletter 
+                            {emails?*} : Correos Electronicos a los cuales enviar directamente
+                            {--s|schedule : Si debe der ejecutado directamente o no}'; 
 
     /**
      * The console command description.
@@ -41,6 +43,8 @@ class SendNewsletterCommand extends Command
     public function handle()
     {
         $emails = $this->arguments( 'emails' );
+        $schedule = $this->option('schedule');
+
         $builder = User::query();
 
         if( isset($emails['emails']) ){
@@ -50,17 +54,21 @@ class SendNewsletterCommand extends Command
         $count = $builder->count();
 
         if( $count ){
-            $this->output->progressStart( $count );
+            $this->info("Se enviaran {$count} correos");
 
-            User::query()
-                ->whereNotNull( 'email_verified_at' )
-                ->each( function (User $user){
-                        $user->notify(new NewsletterNotification());
-                        $this->output->progressAdvance();
-                    } );
+            if( $this->confirm('¿Estas de acuerdo?') || $schedule ){
+                $this->output->progressStart( $count );
 
-            $this->output->progressFinish();
-            return $this->info( "Se enviaron {$count} correos" );
+                User::query()
+                    ->whereNotNull( 'email_verified_at' )
+                    ->each( function (User $user){
+                            $user->notify(new NewsletterNotification());
+                            $this->output->progressAdvance();
+                        } );
+
+                $this->output->progressFinish();
+                return $this->info( "Se enviaron {$count} correos" );
+            }
         }else{
             $this->info('No se envió ningun correo');
         }
