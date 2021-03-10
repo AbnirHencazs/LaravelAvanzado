@@ -3,6 +3,7 @@
 namespace App\Utils;
 
 use App\Events\ModelRated;
+use App\Events\ModelUnrated;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -77,6 +78,22 @@ trait CanRate
         ]);
 
         event( new ModelRated( $this, $model, $score ) ); //disparamos el evento, hace falta que alguien lo escuche
+
+        return true;
+    }
+
+    public function unrate( Model $model )
+    {
+        // $rating = \App\Models\Rating::query()
+        //                             ->where( 'qualifier_id', $this->id )
+        //                             ->where( 'rateable_id', $model->id )
+        //                             ->first();
+
+        // $rating->delete();
+
+        $this->ratings( $model->getMorphClass() )->detach( $model->getKey() );
+
+        event( new ModelUnrated( $this, $model ) );
 
         return true;
     }
