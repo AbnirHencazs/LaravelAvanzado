@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\ModelUnrated;
 use App\Models\Product;
+use App\Notifications\ModelUnratedNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
