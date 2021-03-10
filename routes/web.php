@@ -19,3 +19,6 @@ Route::get('/', function () {
 });
 
 Auth::routes(['verify' => true]); //Nos habilitará todas las rutas necesarias para la verificación de email
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
