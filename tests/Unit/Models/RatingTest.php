@@ -52,4 +52,19 @@ class RatingTest extends TestCase
         $this->assertInstanceOf( Product::class, $rating->rateable );
         $this->assertInstanceOf( User::class, $rating->qualifier );
     }
+
+    public function test_unrating_model()
+    {
+        $this->withoutExceptionHandling();
+        $user = User::factory()->create();
+        $product = Product::factory()->create();
+
+        $user->rate( $product, 5 );
+
+        $user->unrate( $product );
+
+        $rating = Rating::first();
+
+        $this->assertEmpty( $rating );
+    }
 }
